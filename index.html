@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка на Minecraft RP сервер</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --danger: #ff7675;
+            --success: #55efc4;
+            --warning: #fdcb6e;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.imgur.com/3QX3hQe.png') center/cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255,255,255,0.9);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-admin {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-applications {
+            background: var(--success);
+            color: var(--dark);
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+            justify-content: center;
+            font-size: 1rem;
+            padding: 15px;
+        }
+
+        .panel {
+            padding: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            outline: none;
+        }
+
+        .application-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success {
+            background: rgba(85, 239, 196, 0.2);
+            color: #00b894;
+            border: 1px solid #00b894;
+        }
+
+        .error {
+            background: rgba(255, 118, 117, 0.2);
+            color: #d63031;
+            border: 1px solid #d63031;
+        }
+
+        .application {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .application:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .application h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .application p {
+            margin-bottom: 5px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .status-pending {
+            background: rgba(253, 203, 110, 0.2);
+            color: #e17055;
+            border-left-color: #e17055;
+        }
+
+        .status-approved {
+            background: rgba(85, 239, 196, 0.2);
+            color: #00b894;
+            border-left-color: #00b894;
+        }
+
+        .status-rejected {
+            background: rgba(255, 118, 117, 0.2);
+            color: #d63031;
+            border-left-color: #d63031;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .approve-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .reject-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .login-form h2 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .back-btn {
+            background: var(--secondary);
+            color: white;
+            margin-top: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #636e72;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #b2bec3;
+        }
+
+        .tab-content {
+            position: relative;
+        }
+
+        .active-panel {
+            display: block;
+        }
+
+        .floating-cubes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .cube {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(108, 92, 231, 0.1);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .cube:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .cube:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .cube:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .cube:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .cube:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .cube:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .cube:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .cube:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .cube:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .cube:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="floating-cubes">
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+            <div class="cube"></div>
+        </div>
+
+        <div class="header">
+            <h1 class="animate__animated animate__fadeInDown">Minecraft RP Сервер</h1>
+        </div>
+
+        <div class="control-buttons">
+            <button id="showFormBtn" class="btn btn-submit animate__animated animate__fadeIn">
+                <i class="fas fa-paper-plane"></i> Подать заявку
+            </button>
+            <button id="adminBtn" class="btn btn-admin animate__animated animate__fadeIn">
+                <i class="fas fa-lock"></i> Админ панель
+            </button>
+            <button id="myApplicationsBtn" class="btn btn-applications animate__animated animate__fadeIn">
+                <i class="fas fa-list"></i> Мои заявки
+            </button>
+        </div>
+
+        <div class="tab-content">
+            <!-- Форма подачи заявки -->
+            <div id="applicationPanel" class="panel active-panel">
+                <div class="application-form">
+                    <h2 class="animate__animated animate__fadeIn">Форма заявки</h2>
+                    <p class="animate__animated animate__fadeIn animate__delay-1s">Заполните форму для вступления на наш сервер</p>
+                    
+                    <div id="successMessage" class="message success animate__animated animate__fadeIn" style="display: none;">
+                        Заявка успешно отправлена!
+                    </div>
+                    <div id="errorMessage" class="message error animate__animated animate__fadeIn" style="display: none;">
+                        Произошла ошибка при отправке заявки.
+                    </div>
+
+                    <form id="applicationForm" class="animate__animated animate__fadeIn animate__delay-1s">
+                        <div class="form-group">
+                            <label for="minecraftNick">Ник в Minecraft:</label>
+                            <input type="text" id="minecraftNick" required placeholder="Введите ваш ник в Minecraft">
+                        </div>
+                        <div class="form-group">
+                            <label for="telegramUsername">Юзернейм в Telegram:</label>
+                            <input type="text" id="telegramUsername" required placeholder="Введите ваш юзернейм в Telegram (например, @username)">
+                        </div>
+                        <button type="submit" class="btn btn-submit">
+                            <i class="fas fa-paper-plane"></i> Отправить заявку
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Форма входа в админ панель -->
+            <div id="loginPanel" class="panel">
+                <div class="login-form">
+                    <h2 class="animate__animated animate__fadeIn">Вход в админ панель</h2>
+                    <div class="form-group animate__animated animate__fadeIn animate__delay-1s">
+                        <label for="adminUsername">Пользователь:</label>
+                        <input type="text" id="adminUsername" placeholder="Введите имя пользователя">
+                    </div>
+                    <div class="form-group animate__animated animate__fadeIn animate__delay-1s">
+                        <label for="adminPassword">Пароль:</label>
+                        <input type="password" id="adminPassword" placeholder="Введите пароль">
+                    </div>
+                    <button id="loginBtn" class="btn btn-submit animate__animated animate__fadeIn animate__delay-2s">
+                        <i class="fas fa-sign-in-alt"></i> Войти
+                    </button>
+                    <p id="loginError" class="message error animate__animated animate__fadeIn" style="display: none;">
+                        Неверные данные для входа
+                    </p>
+                    <button id="backToFormBtn" class="btn back-btn animate__animated animate__fadeIn animate__delay-2s">
+                        <i class="fas fa-arrow-left"></i> Назад к форме
+                    </button>
+                </div>
+            </div>
+
+            <!-- Админ панель -->
+            <div id="adminPanel" class="panel">
+                <h2 class="animate__animated animate__fadeIn">Админ панель</h2>
+                <p class="animate__animated animate__fadeIn animate__delay-1s">Все заявки на вступление</p>
+                
+                <div id="applicationsList" class="animate__animated animate__fadeIn animate__delay-1s">
+                    <!-- Заявки будут загружаться здесь -->
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Загрузка заявок...</p>
+                    </div>
+                </div>
+                
+                <button id="adminBackBtn" class="btn back-btn animate__animated animate__fadeIn animate__delay-1s">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+            </div>
+
+            <!-- Мои заявки -->
+            <div id="myApplicationsPanel" class="panel">
+                <h2 class="animate__animated animate__fadeIn">Мои заявки</h2>
+                <p class="animate__animated animate__fadeIn animate__delay-1s">История ваших заявок</p>
+                
+                <div id="userApplicationsList" class="animate__animated animate__fadeIn animate__delay-1s">
+                    <!-- Заявки пользователя будут загружаться здесь -->
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Загрузка ваших заявок...</p>
+                    </div>
+                </div>
+                
+                <button id="applicationsBackBtn" class="btn back-btn animate__animated animate__fadeIn animate__delay-1s">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome для иконок -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+        // Инициализация Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNiH6OdQWfAuQsqAr5bzWvr2wXnoqcwhE",
+            authDomain: "topor-coin.firebaseapp.com",
+            databaseURL: "https://topor-coin-default-rtdb.firebaseio.com",
+            projectId: "topor-coin",
+            storageBucket: "topor-coin.appspot.com",
+            messagingSenderId: "963225281134",
+            appId: "1:963225281134:web:a4538e5f87bd1668cc7c7f"
+        };
+
+        // Инициализация Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+
+        // DOM элементы
+        const showFormBtn = document.getElementById('showFormBtn');
+        const adminBtn = document.getElementById('adminBtn');
+        const myApplicationsBtn = document.getElementById('myApplicationsBtn');
+        const applicationPanel = document.getElementById('applicationPanel');
+        const loginPanel = document.getElementById('loginPanel');
+        const adminPanel = document.getElementById('adminPanel');
+        const myApplicationsPanel = document.getElementById('myApplicationsPanel');
+        const adminUsername = document.getElementById('adminUsername');
+        const adminPassword = document.getElementById('adminPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginError = document.getElementById('loginError');
+        const applicationForm = document.getElementById('applicationForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const applicationsList = document.getElementById('applicationsList');
+        const userApplicationsList = document.getElementById('userApplicationsList');
+        const backToFormBtn = document.getElementById('backToFormBtn');
+        const adminBackBtn = document.getElementById('adminBackBtn');
+        const applicationsBackBtn = document.getElementById('applicationsBackBtn');
+
+        // Показать форму заявки
+        showFormBtn.addEventListener('click', () => {
+            hideAllPanels();
+            applicationPanel.classList.add('active-panel');
+            applicationPanel.classList.add('animate__fadeIn');
+        });
+
+        // Показать форму входа в админ панель
+        adminBtn.addEventListener('click', () => {
+            hideAllPanels();
+            loginPanel.classList.add('active-panel');
+            loginPanel.classList.add('animate__fadeIn');
+        });
+
+        // Показать мои заявки
+        myApplicationsBtn.addEventListener('click', () => {
+            hideAllPanels();
+            myApplicationsPanel.classList.add('active-panel');
+            myApplicationsPanel.classList.add('animate__fadeIn');
+            loadUserApplications();
+        });
+
+        // Назад к форме
+        backToFormBtn.addEventListener('click', () => {
+            hideAllPanels();
+            applicationPanel.classList.add('active-panel');
+            applicationPanel.classList.add('animate__fadeIn');
+        });
+
+        // Назад из админ панели
+        adminBackBtn.addEventListener('click', () => {
+            hideAllPanels();
+            loginPanel.classList.add('active-panel');
+            loginPanel.classList.add('animate__fadeIn');
+        });
+
+        // Назад из моих заявок
+        applicationsBackBtn.addEventListener('click', () => {
+            hideAllPanels();
+            applicationPanel.classList.add('active-panel');
+            applicationPanel.classList.add('animate__fadeIn');
+        });
+
+        // Вход в админ панель
+        loginBtn.addEventListener('click', () => {
+            const username = adminUsername.value;
+            const password = adminPassword.value;
+
+            if (username === 'Admin' && password === '306367') {
+                loginError.style.display = 'none';
+                hideAllPanels();
+                adminPanel.classList.add('active-panel');
+                adminPanel.classList.add('animate__fadeIn');
+                loadAllApplications();
+            } else {
+                loginError.style.display = 'block';
+                loginError.classList.add('animate__shakeX');
+                setTimeout(() => {
+                    loginError.classList.remove('animate__shakeX');
+                }, 1000);
+            }
+        });
+
+        // Отправка заявки
+        applicationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const minecraftNick = document.getElementById('minecraftNick').value;
+            const telegramUsername = document.getElementById('telegramUsername').value;
+            const timestamp = new Date().getTime();
+            const deviceId = localStorage.getItem('deviceId') || generateDeviceId();
+            
+            if (!localStorage.getItem('deviceId')) {
+                localStorage.setItem('deviceId', deviceId);
+            }
+
+            const applicationData = {
+                minecraftNick,
+                telegramUsername,
+                status: 'pending',
+                timestamp,
+                deviceId
+            };
+
+            // Показываем анимацию загрузки
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Сохраняем заявку в Firebase
+            database.ref('applications').push(applicationData)
+                .then(() => {
+                    successMessage.style.display = 'block';
+                    successMessage.classList.add('animate__bounceIn');
+                    errorMessage.style.display = 'none';
+                    applicationForm.reset();
+                    
+                    setTimeout(() => {
+                        successMessage.classList.remove('animate__bounceIn');
+                    }, 1000);
+                })
+                .catch((error) => {
+                    errorMessage.style.display = 'block';
+                    errorMessage.classList.add('animate__shakeX');
+                    successMessage.style.display = 'none';
+                    console.error('Ошибка при отправке заявки:', error);
+                    
+                    setTimeout(() => {
+                        errorMessage.classList.remove('animate__shakeX');
+                    }, 1000);
+                });
+        });
+
+        // Скрыть все панели
+        function hideAllPanels() {
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.classList.remove('active-panel');
+                panel.classList.remove('animate__fadeIn');
+            });
+        }
+
+        // Загрузка всех заявок для админа
+        function loadAllApplications() {
+            applicationsList.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Загрузка заявок...</p></div>';
+            
+            database.ref('applications').on('value', (snapshot) => {
+                applicationsList.innerHTML = '';
+                const applications = snapshot.val();
+                
+                if (applications) {
+                    Object.keys(applications).forEach((key) => {
+                        const app = applications[key];
+                        const appElement = createApplicationElement(key, app);
+                        applicationsList.appendChild(appElement);
+                    });
+                } else {
+                    applicationsList.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>Нет заявок</p></div>';
+                }
+            });
+        }
+
+        // Загрузка заявок пользователя
+        function loadUserApplications() {
+            const deviceId = localStorage.getItem('deviceId');
+            userApplicationsList.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Загрузка ваших заявок...</p></div>';
+            
+            if (!deviceId) {
+                userApplicationsList.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Вы еще не отправляли заявок</p></div>';
+                return;
+            }
+            
+            database.ref('applications').orderByChild('deviceId').equalTo(deviceId).on('value', (snapshot) => {
+                userApplicationsList.innerHTML = '';
+                const applications = snapshot.val();
+                
+                if (applications) {
+                    Object.keys(applications).forEach((key) => {
+                        const app = applications[key];
+                        const appElement = createApplicationElement(key, app, false);
+                        userApplicationsList.appendChild(appElement);
+                    });
+                } else {
+                    userApplicationsList.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Вы еще не отправляли заявок</p></div>';
+                }
+            });
+        }
+
+        // Создание элемента заявки
+        function createApplicationElement(key, app, isAdmin = true) {
+            const appElement = document.createElement('div');
+            appElement.className = `application status-${app.status}`;
+            
+            const statusText = getStatusText(app.status);
+            const date = new Date(app.timestamp).toLocaleString();
+            
+            appElement.innerHTML = `
+                <h3>${app.minecraftNick}</h3>
+                <p><strong>Telegram:</strong> ${app.telegramUsername}</p>
+                <p><strong>Дата подачи:</strong> ${date}</p>
+                <span class="status status-${app.status}">${statusText}</span>
+            `;
+            
+            if (isAdmin && app.status === 'pending') {
+                const actionButtons = document.createElement('div');
+                actionButtons.className = 'action-buttons';
+                
+                const approveBtn = document.createElement('button');
+                approveBtn.className = 'action-btn approve-btn';
+                approveBtn.innerHTML = '<i class="fas fa-check"></i> Принять';
+                approveBtn.addEventListener('click', () => updateApplicationStatus(key, 'approved'));
+                
+                const rejectBtn = document.createElement('button');
+                rejectBtn.className = 'action-btn reject-btn';
+                rejectBtn.innerHTML = '<i class="fas fa-times"></i> Отклонить';
+                rejectBtn.addEventListener('click', () => updateApplicationStatus(key, 'rejected'));
+                
+                actionButtons.appendChild(approveBtn);
+                actionButtons.appendChild(rejectBtn);
+                appElement.appendChild(actionButtons);
+            }
+            
+            appElement.classList.add('animate__fadeIn');
+            return appElement;
+        }
+
+        // Обновление статуса заявки
+        function updateApplicationStatus(key, status) {
+            database.ref(`applications/${key}/status`).set(status)
+                .then(() => {
+                    console.log('Статус заявки обновлен');
+                })
+                .catch((error) => {
+                    console.error('Ошибка при обновлении статуса:', error);
+                });
+        }
+
+        // Генерация ID устройства
+        function generateDeviceId() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Получение текста статуса
+        function getStatusText(status) {
+            switch (status) {
+                case 'pending': return 'На рассмотрении';
+                case 'approved': return 'Принята';
+                case 'rejected': return 'Отклонена';
+                default: return status;
+            }
+        }
+
+        // Инициализация - показываем форму заявки по умолчанию
+        hideAllPanels();
+        applicationPanel.classList.add('active-panel');
+    </script>
+</body>
+</html>
