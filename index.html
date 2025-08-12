@@ -459,7 +459,6 @@
         </div>
 
         <div class="tab-content">
-            <!-- Форма подачи заявки -->
             <div id="applicationPanel" class="panel active-panel">
                 <div class="application-form">
                     <h2 class="animate__animated animate__fadeIn">Форма заявки</h2>
@@ -488,7 +487,6 @@
                 </div>
             </div>
 
-            <!-- Форма входа в админ панель -->
             <div id="loginPanel" class="panel">
                 <div class="login-form">
                     <h2 class="animate__animated animate__fadeIn">Вход в админ панель</h2>
@@ -512,13 +510,11 @@
                 </div>
             </div>
 
-            <!-- Админ панель -->
             <div id="adminPanel" class="panel">
                 <h2 class="animate__animated animate__fadeIn">Админ панель</h2>
                 <p class="animate__animated animate__fadeIn animate__delay-1s">Все заявки на вступление</p>
                 
                 <div id="applicationsList" class="animate__animated animate__fadeIn animate__delay-1s">
-                    <!-- Заявки будут загружаться здесь -->
                     <div class="empty-state">
                         <i class="fas fa-spinner fa-spin"></i>
                         <p>Загрузка заявок...</p>
@@ -530,13 +526,11 @@
                 </button>
             </div>
 
-            <!-- Мои заявки -->
             <div id="myApplicationsPanel" class="panel">
                 <h2 class="animate__animated animate__fadeIn">Мои заявки</h2>
                 <p class="animate__animated animate__fadeIn animate__delay-1s">История ваших заявок</p>
                 
                 <div id="userApplicationsList" class="animate__animated animate__fadeIn animate__delay-1s">
-                    <!-- Заявки пользователя будут загружаться здесь -->
                     <div class="empty-state">
                         <i class="fas fa-spinner fa-spin"></i>
                         <p>Загрузка ваших заявок...</p>
@@ -550,11 +544,9 @@
         </div>
     </div>
 
-    <!-- Font Awesome для иконок -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <script>
-        // Инициализация Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCNiH6OdQWfAuQsqAr5bzWvr2wXnoqcwhE",
             authDomain: "topor-coin.firebaseapp.com",
@@ -565,12 +557,10 @@
             appId: "1:963225281134:web:a4538e5f87bd1668cc7c7f"
         };
 
-        // Инициализация Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const auth = firebase.auth();
 
-        // DOM элементы
         const showFormBtn = document.getElementById('showFormBtn');
         const adminBtn = document.getElementById('adminBtn');
         const myApplicationsBtn = document.getElementById('myApplicationsBtn');
@@ -591,21 +581,18 @@
         const adminBackBtn = document.getElementById('adminBackBtn');
         const applicationsBackBtn = document.getElementById('applicationsBackBtn');
 
-        // Показать форму заявки
         showFormBtn.addEventListener('click', () => {
             hideAllPanels();
             applicationPanel.classList.add('active-panel');
             applicationPanel.classList.add('animate__fadeIn');
         });
 
-        // Показать форму входа в админ панель
         adminBtn.addEventListener('click', () => {
             hideAllPanels();
             loginPanel.classList.add('active-panel');
             loginPanel.classList.add('animate__fadeIn');
         });
 
-        // Показать мои заявки
         myApplicationsBtn.addEventListener('click', () => {
             hideAllPanels();
             myApplicationsPanel.classList.add('active-panel');
@@ -613,28 +600,24 @@
             loadUserApplications();
         });
 
-        // Назад к форме
         backToFormBtn.addEventListener('click', () => {
             hideAllPanels();
             applicationPanel.classList.add('active-panel');
             applicationPanel.classList.add('animate__fadeIn');
         });
 
-        // Назад из админ панели
         adminBackBtn.addEventListener('click', () => {
             hideAllPanels();
             loginPanel.classList.add('active-panel');
             loginPanel.classList.add('animate__fadeIn');
         });
 
-        // Назад из моих заявок
         applicationsBackBtn.addEventListener('click', () => {
             hideAllPanels();
             applicationPanel.classList.add('active-panel');
             applicationPanel.classList.add('animate__fadeIn');
         });
 
-        // Вход в админ панель
         loginBtn.addEventListener('click', () => {
             const username = adminUsername.value;
             const password = adminPassword.value;
@@ -654,7 +637,6 @@
             }
         });
 
-        // Отправка заявки
         applicationForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -675,11 +657,9 @@
                 deviceId
             };
 
-            // Показываем анимацию загрузки
             successMessage.style.display = 'none';
             errorMessage.style.display = 'none';
             
-            // Сохраняем заявку в Firebase
             database.ref('applications').push(applicationData)
                 .then(() => {
                     successMessage.style.display = 'block';
@@ -703,7 +683,6 @@
                 });
         });
 
-        // Скрыть все панели
         function hideAllPanels() {
             document.querySelectorAll('.panel').forEach(panel => {
                 panel.classList.remove('active-panel');
@@ -711,7 +690,6 @@
             });
         }
 
-        // Загрузка всех заявок для админа
         function loadAllApplications() {
             applicationsList.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Загрузка заявок...</p></div>';
             
@@ -722,7 +700,7 @@
                 if (applications) {
                     Object.keys(applications).forEach((key) => {
                         const app = applications[key];
-                        const appElement = createApplicationElement(key, app);
+                        const appElement = createApplicationElement(key, app, true);
                         applicationsList.appendChild(appElement);
                     });
                 } else {
@@ -731,7 +709,6 @@
             });
         }
 
-        // Загрузка заявок пользователя
         function loadUserApplications() {
             const deviceId = localStorage.getItem('deviceId');
             userApplicationsList.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Загрузка ваших заявок...</p></div>';
@@ -757,7 +734,6 @@
             });
         }
 
-        // Создание элемента заявки
         function createApplicationElement(key, app, isAdmin = true) {
             const appElement = document.createElement('div');
             appElement.className = `application status-${app.status}`;
@@ -765,37 +741,46 @@
             const statusText = getStatusText(app.status);
             const date = new Date(app.timestamp).toLocaleString();
             
-            appElement.innerHTML = `
-                <h3>${app.minecraftNick}</h3>
-                <p><strong>Telegram:</strong> ${app.telegramUsername}</p>
-                <p><strong>Дата подачи:</strong> ${date}</p>
-                <span class="status status-${app.status}">${statusText}</span>
-            `;
-            
-            if (isAdmin && app.status === 'pending') {
-                const actionButtons = document.createElement('div');
-                actionButtons.className = 'action-buttons';
+            if (isAdmin) {
+                appElement.innerHTML = `
+                    <h3>Заявка от: ${app.minecraftNick}</h3>
+                    <p><strong>Minecraft ник:</strong> ${app.minecraftNick}</p>
+                    <p><strong>Telegram:</strong> ${app.telegramUsername}</p>
+                    <p><strong>Дата подачи:</strong> ${date}</p>
+                    <span class="status status-${app.status}">${statusText}</span>
+                `;
                 
-                const approveBtn = document.createElement('button');
-                approveBtn.className = 'action-btn approve-btn';
-                approveBtn.innerHTML = '<i class="fas fa-check"></i> Принять';
-                approveBtn.addEventListener('click', () => updateApplicationStatus(key, 'approved'));
-                
-                const rejectBtn = document.createElement('button');
-                rejectBtn.className = 'action-btn reject-btn';
-                rejectBtn.innerHTML = '<i class="fas fa-times"></i> Отклонить';
-                rejectBtn.addEventListener('click', () => updateApplicationStatus(key, 'rejected'));
-                
-                actionButtons.appendChild(approveBtn);
-                actionButtons.appendChild(rejectBtn);
-                appElement.appendChild(actionButtons);
+                if (app.status === 'pending') {
+                    const actionButtons = document.createElement('div');
+                    actionButtons.className = 'action-buttons';
+                    
+                    const approveBtn = document.createElement('button');
+                    approveBtn.className = 'action-btn approve-btn';
+                    approveBtn.innerHTML = '<i class="fas fa-check"></i> Принять';
+                    approveBtn.addEventListener('click', () => updateApplicationStatus(key, 'approved'));
+                    
+                    const rejectBtn = document.createElement('button');
+                    rejectBtn.className = 'action-btn reject-btn';
+                    rejectBtn.innerHTML = '<i class="fas fa-times"></i> Отклонить';
+                    rejectBtn.addEventListener('click', () => updateApplicationStatus(key, 'rejected'));
+                    
+                    actionButtons.appendChild(approveBtn);
+                    actionButtons.appendChild(rejectBtn);
+                    appElement.appendChild(actionButtons);
+                }
+            } else {
+                appElement.innerHTML = `
+                    <h3>Minecraft ник: ${app.minecraftNick}</h3>
+                    <p><strong>Telegram:</strong> ${app.telegramUsername}</p>
+                    <p><strong>Дата подачи:</strong> ${date}</p>
+                    <span class="status status-${app.status}">${statusText}</span>
+                `;
             }
             
             appElement.classList.add('animate__fadeIn');
             return appElement;
         }
 
-        // Обновление статуса заявки
         function updateApplicationStatus(key, status) {
             database.ref(`applications/${key}/status`).set(status)
                 .then(() => {
@@ -806,7 +791,6 @@
                 });
         }
 
-        // Генерация ID устройства
         function generateDeviceId() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 const r = Math.random() * 16 | 0;
@@ -815,7 +799,6 @@
             });
         }
 
-        // Получение текста статуса
         function getStatusText(status) {
             switch (status) {
                 case 'pending': return 'На рассмотрении';
@@ -825,7 +808,6 @@
             }
         }
 
-        // Инициализация - показываем форму заявки по умолчанию
         hideAllPanels();
         applicationPanel.classList.add('active-panel');
     </script>
