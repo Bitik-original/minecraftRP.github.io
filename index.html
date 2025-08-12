@@ -19,13 +19,11 @@
             --dark: #2d3436;
             --light: #f5f6fa;
         }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -33,7 +31,6 @@
             padding: 20px;
             color: var(--dark);
         }
-
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -43,7 +40,6 @@
             overflow: hidden;
             position: relative;
         }
-
         .header {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
@@ -52,7 +48,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
@@ -60,7 +55,6 @@
             z-index: 2;
             text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-
         .header::after {
             content: '';
             position: absolute;
@@ -72,7 +66,6 @@
             opacity: 0.1;
             z-index: 1;
         }
-
         .control-buttons {
             display: flex;
             justify-content: center;
@@ -81,7 +74,6 @@
             background: rgba(255,255,255,0.9);
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
-
         .btn {
             padding: 12px 25px;
             border: none;
@@ -95,26 +87,21 @@
             font-size: 0.9rem;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.15);
         }
-
         .btn:active {
             transform: translateY(0);
         }
-
         .btn-admin {
             background: var(--danger);
             color: white;
         }
-
         .btn-applications {
             background: var(--success);
             color: var(--dark);
         }
-
         .btn-submit {
             background: var(--primary);
             color: white;
@@ -123,29 +110,24 @@
             font-size: 1rem;
             padding: 15px;
         }
-
         .panel {
             padding: 30px;
             display: none;
             animation: fadeIn 0.5s ease-out;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .form-group {
             margin-bottom: 25px;
         }
-
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--dark);
         }
-
         input {
             width: 100%;
             padding: 15px;
@@ -154,18 +136,15 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
-
         input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
             outline: none;
         }
-
         .application-form {
             max-width: 500px;
             margin: 0 auto;
         }
-
         .message {
             padding: 15px;
             border-radius: 10px;
@@ -173,19 +152,16 @@
             text-align: center;
             display: none;
         }
-
         .success {
             background: rgba(85, 239, 196, 0.2);
             color: #00b894;
             border: 1px solid #00b894;
         }
-
         .error {
             background: rgba(255, 118, 117, 0.2);
             color: #d63031;
             border: 1px solid #d63031;
         }
-
         .application {
             background: white;
             border-radius: 15px;
@@ -195,21 +171,17 @@
             border-left: 5px solid;
             transition: all 0.3s ease;
         }
-
         .application:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
-
         .application h3 {
             margin-bottom: 10px;
             color: var(--primary);
         }
-
         .application p {
             margin-bottom: 5px;
         }
-
         .status {
             display: inline-block;
             padding: 5px 10px;
@@ -218,31 +190,26 @@
             font-weight: 600;
             margin-top: 10px;
         }
-
         .status-pending {
             background: rgba(253, 203, 110, 0.2);
             color: #e17055;
             border-left-color: #e17055;
         }
-
         .status-approved {
             background: rgba(85, 239, 196, 0.2);
             color: #00b894;
             border-left-color: #00b894;
         }
-
         .status-rejected {
             background: rgba(255, 118, 117, 0.2);
             color: #d63031;
             border-left-color: #d63031;
         }
-
         .action-buttons {
             display: flex;
             gap: 10px;
             margin-top: 15px;
         }
-
         .action-btn {
             padding: 8px 15px;
             border-radius: 5px;
@@ -251,59 +218,48 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-
         .action-btn:hover {
             opacity: 0.9;
             transform: translateY(-1px);
         }
-
         .approve-btn {
             background: var(--success);
             color: white;
         }
-
         .reject-btn {
             background: var(--danger);
             color: white;
         }
-
         .login-form {
             max-width: 400px;
             margin: 0 auto;
             text-align: center;
         }
-
         .login-form h2 {
             margin-bottom: 20px;
             color: var(--primary);
         }
-
         .back-btn {
             background: var(--secondary);
             color: white;
             margin-top: 20px;
         }
-
         .empty-state {
             text-align: center;
             padding: 40px;
             color: #636e72;
         }
-
         .empty-state i {
             font-size: 3rem;
             margin-bottom: 20px;
             color: #b2bec3;
         }
-
         .tab-content {
             position: relative;
         }
-
         .active-panel {
             display: block;
         }
-
         .floating-cubes {
             position: absolute;
             top: 0;
@@ -313,7 +269,6 @@
             overflow: hidden;
             z-index: 0;
         }
-
         .cube {
             position: absolute;
             display: block;
@@ -323,14 +278,12 @@
             animation: animate 25s linear infinite;
             bottom: -150px;
         }
-
         .cube:nth-child(1) {
             left: 25%;
             width: 80px;
             height: 80px;
             animation-delay: 0s;
         }
-
         .cube:nth-child(2) {
             left: 10%;
             width: 20px;
@@ -338,14 +291,12 @@
             animation-delay: 2s;
             animation-duration: 12s;
         }
-
         .cube:nth-child(3) {
             left: 70%;
             width: 20px;
             height: 20px;
             animation-delay: 4s;
         }
-
         .cube:nth-child(4) {
             left: 40%;
             width: 60px;
@@ -353,28 +304,24 @@
             animation-delay: 0s;
             animation-duration: 18s;
         }
-
         .cube:nth-child(5) {
             left: 65%;
             width: 20px;
             height: 20px;
             animation-delay: 0s;
         }
-
         .cube:nth-child(6) {
             left: 75%;
             width: 110px;
             height: 110px;
             animation-delay: 3s;
         }
-
         .cube:nth-child(7) {
             left: 35%;
             width: 150px;
             height: 150px;
             animation-delay: 7s;
         }
-
         .cube:nth-child(8) {
             left: 50%;
             width: 25px;
@@ -382,7 +329,6 @@
             animation-delay: 15s;
             animation-duration: 45s;
         }
-
         .cube:nth-child(9) {
             left: 20%;
             width: 15px;
@@ -390,7 +336,6 @@
             animation-delay: 2s;
             animation-duration: 35s;
         }
-
         .cube:nth-child(10) {
             left: 85%;
             width: 150px;
@@ -398,7 +343,6 @@
             animation-delay: 0s;
             animation-duration: 11s;
         }
-
         @keyframes animate {
             0% {
                 transform: translateY(0) rotate(0deg);
@@ -411,7 +355,6 @@
                 border-radius: 50%;
             }
         }
-
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8rem;
@@ -491,8 +434,8 @@
                 <div class="login-form">
                     <h2 class="animate__animated animate__fadeIn">Вход в админ панель</h2>
                     <div class="form-group animate__animated animate__fadeIn animate__delay-1s">
-                        <label for="adminUsername">Пользователь:</label>
-                        <input type="text" id="adminUsername" placeholder="Введите имя пользователя">
+                        <label for="adminEmail">Email:</label>
+                        <input type="email" id="adminEmail" placeholder="Введите email">
                     </div>
                     <div class="form-group animate__animated animate__fadeIn animate__delay-1s">
                         <label for="adminPassword">Пароль:</label>
@@ -521,8 +464,8 @@
                     </div>
                 </div>
                 
-                <button id="adminBackBtn" class="btn back-btn animate__animated animate__fadeIn animate__delay-1s">
-                    <i class="fas fa-arrow-left"></i> Назад
+                <button id="logoutBtn" class="btn btn-admin animate__animated animate__fadeIn animate__delay-1s">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
                 </button>
             </div>
 
@@ -568,9 +511,10 @@
         const loginPanel = document.getElementById('loginPanel');
         const adminPanel = document.getElementById('adminPanel');
         const myApplicationsPanel = document.getElementById('myApplicationsPanel');
-        const adminUsername = document.getElementById('adminUsername');
+        const adminEmail = document.getElementById('adminEmail');
         const adminPassword = document.getElementById('adminPassword');
         const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
         const loginError = document.getElementById('loginError');
         const applicationForm = document.getElementById('applicationForm');
         const successMessage = document.getElementById('successMessage');
@@ -578,7 +522,6 @@
         const applicationsList = document.getElementById('applicationsList');
         const userApplicationsList = document.getElementById('userApplicationsList');
         const backToFormBtn = document.getElementById('backToFormBtn');
-        const adminBackBtn = document.getElementById('adminBackBtn');
         const applicationsBackBtn = document.getElementById('applicationsBackBtn');
 
         showFormBtn.addEventListener('click', () => {
@@ -606,10 +549,8 @@
             applicationPanel.classList.add('animate__fadeIn');
         });
 
-        adminBackBtn.addEventListener('click', () => {
-            hideAllPanels();
-            loginPanel.classList.add('active-panel');
-            loginPanel.classList.add('animate__fadeIn');
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut();
         });
 
         applicationsBackBtn.addEventListener('click', () => {
@@ -618,22 +559,25 @@
             applicationPanel.classList.add('animate__fadeIn');
         });
 
-        loginBtn.addEventListener('click', () => {
-            const username = adminUsername.value;
+        loginBtn.addEventListener('click', async () => {
+            const email = adminEmail.value;
             const password = adminPassword.value;
-
-            if (username === 'Admin' && password === '306367') {
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
                 loginError.style.display = 'none';
                 hideAllPanels();
                 adminPanel.classList.add('active-panel');
                 adminPanel.classList.add('animate__fadeIn');
                 loadAllApplications();
-            } else {
+            } catch (error) {
+                loginError.textContent = "Неверный email или пароль";
                 loginError.style.display = 'block';
                 loginError.classList.add('animate__shakeX');
                 setTimeout(() => {
                     loginError.classList.remove('animate__shakeX');
                 }, 1000);
+                console.error("Ошибка входа:", error);
             }
         });
 
@@ -807,6 +751,13 @@
                 default: return status;
             }
         }
+
+        auth.onAuthStateChanged((user) => {
+            if (!user && adminPanel.classList.contains('active-panel')) {
+                hideAllPanels();
+                loginPanel.classList.add('active-panel');
+            }
+        });
 
         hideAllPanels();
         applicationPanel.classList.add('active-panel');
